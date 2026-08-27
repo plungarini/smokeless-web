@@ -14,6 +14,12 @@
 			radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.055), transparent 28%),
 			radial-gradient(circle at 78% 42%, rgba(255, 255, 255, 0.045), transparent 30%),
 			linear-gradient(180deg, #121218, #0b0b10);
+		/* iOS paints the safe-area/overscroll-bounce strips (status bar,
+		   home-indicator) using html's plain background-color, not the
+		   gradient above — without this (declared after, so the shorthand
+		   above doesn't reset it) they render white in standalone PWA mode
+		   instead of matching the app's background. */
+		background-color: var(--smoke-bg);
 		color: var(--smoke-text);
 		font-family: 'IBM Plex Sans', sans-serif;
 		overflow: hidden;
