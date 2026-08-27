@@ -46,11 +46,13 @@ export default defineConfig({
 							expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
 						},
 					},
-					{
-						urlPattern: ({ url }) => url.origin === 'https://firestore.googleapis.com',
-						handler: 'NetworkFirst',
-						options: { cacheName: 'firestore-api', networkTimeoutSeconds: 4 },
-					},
+					// Deliberately no runtime-caching rule for firestore.googleapis.com: the
+					// SDK's own persistentLocalCache (see firebase.ts) already handles
+					// offline reads/writes, and letting the service worker intercept those
+					// requests breaks Firestore's real-time /Listen/channel and
+					// /Write/channel long-poll streams (Workbox tries to buffer/clone the
+					// response to cache it, which a streaming connection can't survive) —
+					// this was hanging onSnapshot() subscriptions forever on every browser.
 				],
 			},
 			devOptions: { enabled: false },
