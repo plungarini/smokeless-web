@@ -1,5 +1,5 @@
 export const smokeInputClass =
-	'w-full rounded-[18px] border border-white/[0.08] bg-black/30 px-4 py-[0.9rem] text-text box-border focus:outline-1 focus:outline-white/[0.28]';
+	'w-full min-w-0 rounded-[18px] border border-white/[0.08] bg-black/30 px-4 py-[0.9rem] text-text box-border focus:outline-1 focus:outline-white/[0.28]';
 
 export const glassCardClass = 'smoke-glass-card';
 
