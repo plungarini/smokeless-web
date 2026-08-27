@@ -12,7 +12,6 @@ export function BottomTabBar({ activeTab, onChange }: { activeTab: AppTab; onCha
 						<button
 							key={item.id}
 							type="button"
-							data-haptic="selection"
 							onClick={() => onChange(item.id)}
 							className={`pointer-events-auto flex h-14 items-center justify-center rounded-full transition ${isActive ? 'bg-white/[0.16] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]' : 'text-text-dim'}`}
 							aria-label={item.label}
