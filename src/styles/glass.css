@@ -64,11 +64,14 @@
 }
 
 .smoke-nav-dock {
-	padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+	/* Fixed 14px gap below the nav pill so it never sits flush against the edge.
+	   Deliberately no env(safe-area-inset-bottom): in the installed iOS PWA that
+	   inset (~34px) rendered as a solid-color dead band under the pill. */
+	padding-bottom: 14px;
 }
 
 .smoke-app-content {
-	padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+	padding-bottom: 5.75rem;
 }
 
 .smoke-calendar-day {
