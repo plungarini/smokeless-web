@@ -56,12 +56,9 @@ const CUSTOM_PATTERNS: Record<string, HapticPattern> = {
 		{ duration: 18, intensity: 0.6 },
 		{ delay: 40, duration: 10, intensity: 0.25 },
 	],
-	// Deliberately the heaviest feel in the app — two long full-power hits.
+	// One crisp, instant full-power thump — a hard click, not a buzz.
 	// Used for the log-smoke button, the one action that should feel weighty.
-	'impact-hard': [
-		{ duration: 75, intensity: 1 },
-		{ delay: 12, duration: 45, intensity: 1 },
-	],
+	'impact-hard': [{ duration: 22, intensity: 1 }],
 	// One long vibration for warnings. Android-only in effect; iOS gets one tick.
 	buzz: [{ duration: 600, intensity: 1 }],
 };
