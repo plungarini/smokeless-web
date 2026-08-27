@@ -315,6 +315,7 @@ export default function App() {
 							body="Every logged smoke and your cessation records will be permanently deleted. This can't be undone."
 							confirmLabel="Delete everything"
 							busy={mutating}
+							requireTypedConfirmation="DELETE"
 							onCancel={() => setDeleteAllConfirmOpen(false)}
 							onConfirm={() => void confirmDeleteAll()}
 						/>
