@@ -49,13 +49,18 @@ export function HomePage({
 							onClick={onAddSmoke}
 							aria-label={mutating ? 'Logging smoke…' : 'Log smoke'}
 						>
-							{mutating ? (
-								<svg className="size-8 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+							<span className="relative flex size-14 items-center justify-center">
+								<svg
+									className={`absolute size-8 animate-spin transition-opacity ${mutating ? 'opacity-100' : 'opacity-0'}`}
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+								>
 									<path d="M21 12a9 9 0 1 1-6.219-8.56" />
 								</svg>
-							) : (
-								<IcAdd className="size-14" />
-							)}
+								<IcAdd className={`absolute size-14 transition-opacity ${mutating ? 'opacity-0' : 'opacity-100'}`} />
+							</span>
 						</button>
 						<div className="text-right">
 							<div className="text-detail uppercase tracking-[0.34em] text-text-dim">Smoked today</div>
