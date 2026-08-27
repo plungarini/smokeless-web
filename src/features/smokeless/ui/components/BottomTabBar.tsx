@@ -3,8 +3,8 @@ import { TAB_ICONS } from './icons';
 
 export function BottomTabBar({ activeTab, onChange }: { activeTab: AppTab; onChange: (nextTab: AppTab) => void }) {
 	return (
-		<div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pb-[calc(env(safe-area-inset-bottom,0px)+10px)] pt-3">
-			<div className="smoke-nav-shell mx-auto grid max-w-md grid-cols-4 gap-2 p-2">
+		<div className="smoke-nav-dock pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pt-3">
+			<div className="smoke-nav-shell mx-auto grid max-w-md grid-cols-4 gap-2 px-2 pt-2">
 				{APP_TABS.map((item) => {
 					const isActive = activeTab === item.id;
 					const TabIcon = isActive ? TAB_ICONS[item.id].active : TAB_ICONS[item.id].idle;

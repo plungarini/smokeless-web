@@ -218,7 +218,7 @@ export default function App() {
 			) : !account || !canonicalUid || !userDocument ? null : (
 				<ErrorBoundary>
 					<>
-						<div className="smoke-app-shell h-dvh">
+						<div className="smoke-app-shell h-full">
 							<div className="smoke-app-ornament smoke-app-ornament-top" />
 							<div className="smoke-app-ornament smoke-app-ornament-bottom" />
 
@@ -228,7 +228,7 @@ export default function App() {
 								{tab === 'history' ? <PageHeader title="History" subtitle="Select a date to view logs" /> : null}
 								{tab === 'settings' ? <PageHeader title="Settings" subtitle="Account and app actions" /> : null}
 
-								<div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible overscroll-contain px-4 pb-32">
+								<div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible overscroll-contain px-4 smoke-app-content">
 									{tab === 'home' ? (
 										<HomePage
 											todayCount={todayCount}
