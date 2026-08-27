@@ -47,6 +47,7 @@ export async function signOut(): Promise<void> {
 
 export function authErrorMessage(error: unknown): string {
 	const code = (error as { code?: string })?.code ?? '';
+	const message = (error as { message?: string })?.message ?? '';
 	switch (code) {
 		case 'auth/invalid-email':
 			return 'That email address looks invalid.';
@@ -65,6 +66,9 @@ export function authErrorMessage(error: unknown): string {
 		case 'auth/network-request-failed':
 			return 'Network error — check your connection and try again.';
 		default:
-			return 'Something went wrong. Please try again.';
+			// Temporary debug aid: surface the raw code/message for unrecognized errors
+			// so it's visible on-screen even on a phone we can't remote-debug (see
+			// Google sign-in investigation). Remove once the root cause is confirmed.
+			return `Something went wrong. Please try again. (${code || 'no code'}: ${message || 'no message'})`;
 	}
 }
