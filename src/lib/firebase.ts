@@ -10,7 +10,7 @@
  */
 
 import { type FirebaseApp, getApps, initializeApp } from 'firebase/app';
-import { type Auth, getAuth, onAuthStateChanged, type User } from 'firebase/auth';
+import { type Auth, browserLocalPersistence, initializeAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import {
 	type Firestore,
 	getFirestore,
@@ -35,10 +35,13 @@ function ensureApp(): FirebaseApp {
 
 export function getFirebaseAuth(): Auth {
 	if (authInstance) return authInstance;
-	// getAuth() already defaults to durable browserLocalPersistence and wires
-	// up the default popup/redirect resolver — initializeAuth() with a custom
-	// config is only needed to override those, which we don't need to here.
-	authInstance = getAuth(ensureApp());
+	// Force localStorage-backed persistence instead of the SDK's default
+	// indexedDBLocalPersistence. iOS Safari has a long-standing WebKit bug
+	// where an IndexedDB open() call can hang forever (no resolve, no
+	// reject) after the tab was backgrounded/suspended — that stalls
+	// onAuthStateChanged and leaves the app stuck on the boot splash with
+	// zero console errors. localStorage isn't subject to that bug.
+	authInstance = initializeAuth(ensureApp(), { persistence: browserLocalPersistence });
 	return authInstance;
 }
 

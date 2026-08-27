@@ -41,7 +41,20 @@ export async function startBootstrap(): Promise<void> {
 	if (started) return;
 	started = true;
 
+	// Safety net: if the very first auth callback never fires (seen on iOS
+	// Safari when a WebKit IndexedDB bug hangs persistence lookup), don't
+	// leave the user staring at the splash screen forever — surface the
+	// retry UI instead.
+	let sawFirstAuthState = false;
+	const bootTimeout = window.setTimeout(() => {
+		if (!sawFirstAuthState) {
+			appStore.setPhase('blocked', 'Smokeless is taking longer than usual to start. Please try again.');
+		}
+	}, 10_000);
+
 	subscribeToAuthState((user) => {
+		sawFirstAuthState = true;
+		window.clearTimeout(bootTimeout);
 		if (user) {
 			appStore.setAccount({
 				uid: user.uid,
