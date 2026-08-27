@@ -64,9 +64,6 @@
 }
 
 .smoke-nav-dock {
-	/* Fixed 14px gap below the nav pill so it never sits flush against the edge.
-	   Deliberately no env(safe-area-inset-bottom): in the installed iOS PWA that
-	   inset (~34px) rendered as a solid-color dead band under the pill. */
 	padding-bottom: 14px;
 }
 
