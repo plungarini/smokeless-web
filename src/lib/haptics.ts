@@ -17,6 +17,15 @@ import type { Haptics as HapticsController } from '@haptics/vanilla';
  * specific preset. Opt a single element out with `data-haptic-skip`, or give
  * it a stronger/weaker feel with an explicit `data-haptic="<preset>"`.
  *
+ * IMPORTANT: `tagSubtree` below must only ever tag elements that actually
+ * match `TAGGABLE_SELECTOR`. A previous version tagged the MutationObserver's
+ * `root` unconditionally, which stamped `data-haptic` onto `document.body`
+ * and onto every plain wrapper `<div>` React ever mounted (page shells, modal
+ * panels, tab containers) — each of those then got its own iOS overlay sized
+ * to cover that entire container, swallowing every tap inside it meant for
+ * the real buttons nested within. If taps ever stop registering on iOS again,
+ * check here first before assuming the platform hack itself is unfixable.
+ *
  * Practical limits (platform, not fixable here):
  *  - iOS 26.5+ fires a single tick only; multi-segment patterns lose their tail.
  *  - iOS haptics need a genuine tap, so `triggerHaptic()` fired from a timer
@@ -100,7 +109,11 @@ function tagElement(el: Element): void {
 }
 
 function tagSubtree(root: ParentNode): void {
-	if (root instanceof Element) tagElement(root);
+	// Only tag `root` itself if it actually matches — otherwise every newly
+	// mounted container (a page wrapper, a modal panel, anything React
+	// re-renders) gets tagged too, and its iOS overlay ends up covering that
+	// entire container, swallowing taps meant for the real buttons inside it.
+	if (root instanceof Element && root.matches(TAGGABLE_SELECTOR)) tagElement(root);
 	root.querySelectorAll(TAGGABLE_SELECTOR).forEach(tagElement);
 }
 
