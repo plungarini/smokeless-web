@@ -1,0 +1,13 @@
+# Settings for Backend (on Cloud Run).
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+runConfig:
+  minInstances: 0
+  maxInstances: 100
+  concurrency: 80
+  memoryMiB: 512
+
+# No env config needed here: App Hosting auto-injects FIREBASE_WEBAPP_CONFIG
+# at build time, and the Firebase JS SDK's postinstall script picks it up so
+# `initializeApp()` works with no arguments (see src/lib/firebase.ts). This
+# avoids committing the project's API key/config to source control.
+# See https://firebase.google.com/docs/app-hosting/firebase-sdks
