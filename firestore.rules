@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Smokeless Firestore rules.
+//
+// Data model:
+//   /users/{uid}                — canonical user doc + preferences.
+//   /users/{uid}/logs/{logId}   — smoke log entries.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isUserOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      allow get, create, update, delete: if isUserOwner(uid);
+      allow list: if false;
+
+      match /logs/{logId} {
+        allow get, list, create, update, delete: if isUserOwner(uid);
+      }
+    }
+  }
+}
