@@ -1,4 +1,4 @@
-import { startTransition, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { appStore } from './app/store';
 import { signOutAndReset, startBootstrap } from './app/bootstrap';
 import { useAppSelector } from './app/hooks/useAppSelector';
@@ -284,14 +284,7 @@ export default function App() {
 									) : null}
 								</div>
 
-								<BottomTabBar
-									activeTab={tab}
-									onChange={(next) => {
-										startTransition(() => {
-											appStore.setTab(next);
-										});
-									}}
-								/>
+								<BottomTabBar activeTab={tab} onChange={(next) => appStore.setTab(next)} />
 							</div>
 						</div>
 
@@ -322,6 +315,7 @@ export default function App() {
 							body="Every logged smoke and your cessation records will be permanently deleted. This can't be undone."
 							confirmLabel="Delete everything"
 							busy={mutating}
+							requireTypedConfirmation="DELETE"
 							onCancel={() => setDeleteAllConfirmOpen(false)}
 							onConfirm={() => void confirmDeleteAll()}
 						/>

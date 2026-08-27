@@ -15,13 +15,12 @@
 	html,
 	body {
 		height: 100%;
+		height: 100dvh;
 		margin: 0;
 		color: var(--smoke-text);
 		font-family: 'IBM Plex Sans', sans-serif;
 		overflow: hidden;
 		overscroll-behavior: none;
-		/* Standalone-mode PWAs have no browser chrome to catch a pull-to-refresh
-		   or edge-swipe gesture, so both would otherwise fight page scrolling. */
 		-webkit-user-select: none;
 		user-select: none;
 	}
@@ -31,8 +30,6 @@
 	select,
 	textarea {
 		font: inherit;
-		/* Remove the grey/blue flash Android/iOS paint on every tap — the app
-		   already provides its own pressed states via CSS transitions. */
 		-webkit-tap-highlight-color: transparent;
 	}
 

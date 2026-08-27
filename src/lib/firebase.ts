@@ -10,7 +10,7 @@
  */
 
 import { type FirebaseApp, getApps, initializeApp } from 'firebase/app';
-import { type Auth, browserLocalPersistence, initializeAuth, onAuthStateChanged, type User } from 'firebase/auth';
+import { type Auth, browserLocalPersistence, browserPopupRedirectResolver, initializeAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import {
 	type Firestore,
 	getFirestore,
@@ -41,7 +41,14 @@ export function getFirebaseAuth(): Auth {
 	// reject) after the tab was backgrounded/suspended — that stalls
 	// onAuthStateChanged and leaves the app stuck on the boot splash with
 	// zero console errors. localStorage isn't subject to that bug.
-	authInstance = initializeAuth(ensureApp(), { persistence: browserLocalPersistence });
+	//
+	// getAuth() wires up a default popupRedirectResolver automatically;
+	// initializeAuth() does not, so it must be passed explicitly or
+	// signInWithPopup() throws auth/argument-error with no useful message.
+	authInstance = initializeAuth(ensureApp(), {
+		persistence: browserLocalPersistence,
+		popupRedirectResolver: browserPopupRedirectResolver,
+	});
 	return authInstance;
 }
 

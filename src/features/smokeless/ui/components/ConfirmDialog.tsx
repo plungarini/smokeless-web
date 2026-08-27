@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button } from '../../../../components/ui/Button';
 import { circleIconButtonClass } from '../styles';
 
@@ -8,6 +9,7 @@ export function ConfirmDialog({
 	confirmLabel = 'Delete',
 	cancelLabel = 'Cancel',
 	busy = false,
+	requireTypedConfirmation,
 	onCancel,
 	onConfirm,
 }: {
@@ -17,9 +19,18 @@ export function ConfirmDialog({
 	confirmLabel?: string;
 	cancelLabel?: string;
 	busy?: boolean;
+	/** If set, Confirm stays disabled until the user types this word exactly (case-insensitive). */
+	requireTypedConfirmation?: string;
 	onCancel: () => void;
 	onConfirm: () => void;
 }) {
+	const [typedValue, setTypedValue] = useState('');
+
+	useEffect(() => {
+		if (!open) setTypedValue('');
+	}, [open]);
+
+	const confirmLocked = !!requireTypedConfirmation && typedValue.trim().toUpperCase() !== requireTypedConfirmation.toUpperCase();
 	return (
 		<div
 			className={[
@@ -53,11 +64,28 @@ export function ConfirmDialog({
 					</button>
 				</div>
 
+				{requireTypedConfirmation ? (
+					<label className="mt-6 block">
+						<span className="text-[13px] text-text-dim">
+							Type <span className="font-mono text-text">{requireTypedConfirmation}</span> to confirm
+						</span>
+						<input
+							type="text"
+							value={typedValue}
+							onChange={(event) => setTypedValue(event.target.value)}
+							autoComplete="off"
+							autoCapitalize="characters"
+							spellCheck={false}
+							className="mt-2 w-full rounded-2xl bg-white/[0.06] px-4 py-3 text-text outline-none"
+						/>
+					</label>
+				) : null}
+
 				<div className="mt-6 flex gap-3">
 					<Button variant="secondary" className="flex-1 rounded-[20px]" onClick={onCancel} disabled={busy}>
 						{cancelLabel}
 					</Button>
-					<Button variant="danger" className="flex-1 rounded-[20px]" onClick={onConfirm} disabled={busy}>
+					<Button variant="danger" className="flex-1 rounded-[20px]" onClick={onConfirm} disabled={busy || confirmLocked}>
 						{confirmLabel}
 					</Button>
 				</div>
