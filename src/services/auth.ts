@@ -1,10 +1,9 @@
 import {
 	createUserWithEmailAndPassword,
-	getRedirectResult,
 	GoogleAuthProvider,
 	sendPasswordResetEmail,
 	signInWithEmailAndPassword,
-	signInWithRedirect,
+	signInWithPopup,
 	signOut as firebaseSignOut,
 	updateProfile,
 } from 'firebase/auth';
@@ -25,28 +24,17 @@ export async function signUpWithEmail(email: string, password: string, displayNa
 }
 
 /**
- * Redirect (not popup) flow: popups are unreliable in installed/standalone
- * PWAs — no browser chrome to host them, and iOS/Android frequently block
- * them outright. This navigates away to Google and back; the app resumes
- * the sign-in via `consumeGoogleRedirectResult` on the next boot.
+ * Popup (not redirect) flow: `authDomain` (smokeless-eu.firebaseapp.com)
+ * differs from this app's own origin, and `signInWithRedirect` relies on a
+ * cross-origin storage relay between the two to hand back the result — one
+ * that modern Chrome's third-party storage partitioning silently breaks
+ * (getRedirectResult() resolves to null, no error, no sign-in). The popup
+ * flow instead uses a live postMessage channel while the popup is open, so
+ * it isn't affected by that partitioning.
  */
 export async function signInWithGoogle(): Promise<void> {
 	const provider = new GoogleAuthProvider();
-	await signInWithRedirect(getFirebaseAuth(), provider);
-}
-
-/**
- * Call once during boot, before subscribing to auth state, to finish a
- * redirect sign-in (if one is in progress) and surface any error. Resolves
- * to null when there was no pending redirect.
- */
-export async function consumeGoogleRedirectResult(): Promise<{ ok: true } | { ok: false; error: unknown } | null> {
-	try {
-		const result = await getRedirectResult(getFirebaseAuth());
-		return result ? { ok: true } : null;
-	} catch (error) {
-		return { ok: false, error };
-	}
+	await signInWithPopup(getFirebaseAuth(), provider);
 }
 
 export async function resetPassword(email: string): Promise<void> {
