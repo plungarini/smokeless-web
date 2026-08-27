@@ -1,0 +1,75 @@
+@layer base {
+	html {
+		/* Prevent iOS Safari from auto-zooming the page on double-tap and on
+		   input focus (the latter also requires 16px+ input font-size below). */
+		touch-action: manipulation;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	html,
+	body {
+		height: 100%;
+		margin: 0;
+		background:
+			radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.055), transparent 28%),
+			radial-gradient(circle at 78% 42%, rgba(255, 255, 255, 0.045), transparent 30%),
+			linear-gradient(180deg, #121218, #0b0b10);
+		color: var(--smoke-text);
+		font-family: 'IBM Plex Sans', sans-serif;
+		overflow: hidden;
+		overscroll-behavior: none;
+		/* Standalone-mode PWAs have no browser chrome to catch a pull-to-refresh
+		   or edge-swipe gesture, so both would otherwise fight page scrolling. */
+		-webkit-user-select: none;
+		user-select: none;
+	}
+
+	button,
+	input,
+	select,
+	textarea {
+		font: inherit;
+		/* Remove the grey/blue flash Android/iOS paint on every tap — the app
+		   already provides its own pressed states via CSS transitions. */
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	button {
+		-webkit-user-select: none;
+		user-select: none;
+		-webkit-touch-callout: none;
+	}
+
+	input,
+	textarea {
+		/* iOS Safari auto-zooms the viewport on focusing any input under 16px. */
+		font-size: max(16px, 1rem);
+		-webkit-user-select: text;
+		user-select: text;
+	}
+
+	#root {
+		height: 100dvh;
+		overflow: hidden;
+	}
+}
+
+@keyframes ember-bump {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.ember-bump {
+	animation: ember-bump 220ms ease-out;
+}
+
+.ghost-bar {
+	opacity: 0.18;
+}

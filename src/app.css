@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+@import './styles/theme.css';
+@import './styles/base.css';
+@import './styles/glass.css';
+
+@source "./**/*.{ts,tsx}";
