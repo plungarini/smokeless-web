@@ -30,8 +30,15 @@ const STORAGE_KEY = 'smokeless.haptics.enabled';
 /** Elements that should buzz on tap unless they opt out with `data-haptic-skip`. */
 const TAGGABLE_SELECTOR = 'button, a[href], [role="button"], [role="tab"], [role="switch"], [role="menuitem"], [role="option"]';
 
-/** Passed to @haptics so its handlers attach to everything the tagger touches. */
-const HAPTIC_SELECTOR = `${TAGGABLE_SELECTOR}, [data-haptic]`;
+/**
+ * Passed to @haptics so its handlers attach to everything the tagger touches.
+ *
+ * The `:not([data-haptic-skip])` is load-bearing: @haptics' own selector
+ * matching ignores that attribute (it only reads `data-haptic` for pattern
+ * lookup), so without excluding it here every skip-tagged element would still
+ * get its iOS overlay `<input>` spliced in — see the iOS note below.
+ */
+const HAPTIC_SELECTOR = `${TAGGABLE_SELECTOR}:not([data-haptic-skip]), [data-haptic]:not([data-haptic-skip])`;
 
 export type HapticName =
 	| 'selection'
