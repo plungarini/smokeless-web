@@ -43,6 +43,7 @@ export function HomePage({
 					<div className="mt-2 flex items-end justify-between gap-4">
 						<button
 							type="button"
+							data-haptic="impact-hard"
 							className={`${plusFabClass} ${mutating ? 'opacity-40' : ''}`}
 							disabled={mutating}
 							onClick={onAddSmoke}

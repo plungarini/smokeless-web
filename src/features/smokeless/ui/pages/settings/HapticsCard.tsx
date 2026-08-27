@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Card } from '../../../../../components/ui/Card';
-import { isHapticsEnabled, isHapticsSupported, setHapticsEnabled, triggerHaptic } from '../../../../../lib/haptics';
+import { isHapticsEnabled, isHapticsSupported, setHapticsEnabled, type HapticName } from '../../../../../lib/haptics';
 import { glassCardClass, sectionLabelClass, segmentedButtonBaseClass } from '../../styles';
 
-const TEST_PRESETS = ['success', 'error', 'nudge', 'buzz'] as const;
+const TEST_PRESETS: readonly HapticName[] = ['success', 'error', 'nudge', 'buzz'];
 
 export function HapticsCard() {
 	const [enabled, setEnabled] = useState(() => isHapticsEnabled());
@@ -13,7 +13,6 @@ export function HapticsCard() {
 		const next = !enabled;
 		setHapticsEnabled(next);
 		setEnabled(next);
-		if (next) triggerHaptic('selection');
 	}
 
 	return (
@@ -29,6 +28,7 @@ export function HapticsCard() {
 					<button
 						type="button"
 						role="switch"
+						data-haptic="selection"
 						aria-checked={enabled}
 						aria-label="Toggle haptic feedback"
 						onClick={toggle}
@@ -43,12 +43,9 @@ export function HapticsCard() {
 				{enabled ? (
 					<div className="grid grid-cols-4 gap-1 rounded-full bg-white/[0.04] p-1.5">
 						{TEST_PRESETS.map((preset) => (
-							<button
-								key={preset}
-								type="button"
-								onClick={() => triggerHaptic(preset)}
-								className={segmentedButtonBaseClass}
-							>
+							// data-haptic drives the real (iOS-accurate) playback; no imperative
+							// call here or the pattern would fire twice on Android / iOS < 26.5.
+							<button key={preset} type="button" data-haptic={preset} className={segmentedButtonBaseClass}>
 								{preset}
 							</button>
 						))}
