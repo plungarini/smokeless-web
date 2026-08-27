@@ -29,6 +29,7 @@ export function AuthPage() {
 				await syncAccountAndUserDoc();
 			}
 		} catch (err) {
+			console.error('[Smokeless] email auth failed', err);
 			setError(authErrorMessage(err));
 		} finally {
 			setBusy(false);
@@ -42,6 +43,7 @@ export function AuthPage() {
 		try {
 			await signInWithGoogle();
 		} catch (err) {
+			console.error('[Smokeless] Google sign-in failed', err);
 			setError(authErrorMessage(err));
 		} finally {
 			setBusy(false);
@@ -59,6 +61,7 @@ export function AuthPage() {
 			await resetPassword(email.trim());
 			setInfo('Password reset email sent — check your inbox.');
 		} catch (err) {
+			console.error('[Smokeless] password reset failed', err);
 			setError(authErrorMessage(err));
 		} finally {
 			setBusy(false);
