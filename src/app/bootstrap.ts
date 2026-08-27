@@ -1,6 +1,6 @@
 import { appStore } from './store';
 import { ensureUserDocument, subscribeToLastLogEntry, subscribeToTodayEntries, subscribeToUserDocument } from '../services/firestore';
-import { authErrorMessage, consumeGoogleRedirectResult, signOut as firebaseSignOut } from '../services/auth';
+import { signOut as firebaseSignOut } from '../services/auth';
 import { getFirebaseAuth, subscribeToAuthState } from '../lib/firebase';
 
 let unsubscribeUserDoc: (() => void) | null = null;
@@ -40,14 +40,6 @@ async function bootForUid(uid: string, email: string, displayName: string): Prom
 export async function startBootstrap(): Promise<void> {
 	if (started) return;
 	started = true;
-
-	// Must run before the first auth-state check below settles so a failed
-	// Google-redirect sign-in surfaces its error on the auth screen instead
-	// of silently dropping the user back to a blank sign-in form.
-	const redirectResult = await consumeGoogleRedirectResult();
-	if (redirectResult && !redirectResult.ok) {
-		appStore.setAuthError(authErrorMessage(redirectResult.error));
-	}
 
 	subscribeToAuthState((user) => {
 		if (user) {

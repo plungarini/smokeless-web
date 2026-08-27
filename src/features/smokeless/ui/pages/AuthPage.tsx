@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { appStore } from '../../../../app/store';
 import { syncAccountAndUserDoc } from '../../../../app/bootstrap';
-import { useAppSelector } from '../../../../app/hooks/useAppSelector';
 import { Button } from '../../../../components/ui/Button';
 import { Card } from '../../../../components/ui/Card';
 import { authErrorMessage, resetPassword, signInWithEmail, signInWithGoogle, signUpWithEmail } from '../../../../services/auth';
@@ -15,18 +13,8 @@ export function AuthPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [busy, setBusy] = useState(false);
-	const [localError, setLocalError] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
 	const [info, setInfo] = useState<string | null>(null);
-
-	// A failed Google-redirect sign-in surfaces its error here after the
-	// full-page round trip (see consumeGoogleRedirectResult in bootstrap.ts),
-	// so it has to live in the store rather than this component's own state.
-	const redirectError = useAppSelector((s) => s.authError);
-	const error = localError ?? redirectError;
-	const setError = (message: string | null) => {
-		setLocalError(message);
-		if (redirectError) appStore.setAuthError(null);
-	};
 
 	async function handleSubmit(event: React.FormEvent) {
 		event.preventDefault();

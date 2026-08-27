@@ -14,8 +14,6 @@ export type AppPhase = 'booting' | 'auth' | 'ready' | 'blocked';
 export interface AppState {
 	phase: AppPhase;
 	statusMessage: string | null;
-	/** Surfaced by AuthPage after a Google-redirect sign-in fails or completes. */
-	authError: string | null;
 
 	account: AuthAccountInfo | null;
 	canonicalUid: string | null;
@@ -43,7 +41,6 @@ export interface AppState {
 const initialState: AppState = {
 	phase: 'booting',
 	statusMessage: null,
-	authError: null,
 
 	account: null,
 	canonicalUid: null,
@@ -111,10 +108,6 @@ export class AppStore {
 
 	setPhase(phase: AppPhase, statusMessage: string | null = null): void {
 		this.commit({ ...this.state, phase, statusMessage });
-	}
-
-	setAuthError(message: string | null): void {
-		this.commit({ ...this.state, authError: message });
 	}
 
 	// ── Identity ──────────────────────────────────────────────────────
