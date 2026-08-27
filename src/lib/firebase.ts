@@ -26,7 +26,10 @@ let firestoreInstance: Firestore | null = null;
 
 function ensureApp(): FirebaseApp {
 	if (appInstance) return appInstance;
-	appInstance = getApps().length > 0 ? getApps()[0]! : initializeApp(env.firebaseConfig);
+	// On App Hosting, env.firebaseConfig is undefined and initializeApp() with
+	// no args picks up the FIREBASE_WEBAPP_CONFIG the SDK's postinstall script
+	// injected at build time.
+	appInstance = getApps().length > 0 ? getApps()[0]! : env.firebaseConfig ? initializeApp(env.firebaseConfig) : initializeApp();
 	return appInstance;
 }
 
