@@ -6,13 +6,18 @@
 .smoke-app-ornament {
 	position: absolute;
 	border-radius: 999px;
-	background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015) 52%, transparent 72%);
+	background: radial-gradient(
+		circle at 50% 50%,
+		rgba(255, 255, 255, 0.055),
+		rgba(255, 255, 255, 0.015) 52%,
+		transparent 72%
+	);
 	pointer-events: none;
 	filter: blur(2px);
 }
 
 .smoke-app-ornament-top {
-	top: -10%;
+	top: 22%;
 	left: -28%;
 	width: 32rem;
 	height: 32rem;
@@ -27,6 +32,7 @@
 
 .smoke-page-header {
 	background: transparent;
+	padding-top: calc(env(safe-area-inset-top, 0px) + 34px);
 }
 
 .smoke-page-title {
@@ -54,6 +60,15 @@
 		0 18px 40px rgba(0, 0, 0, 0.34);
 	backdrop-filter: blur(20px);
 	border-radius: 999px;
+	padding-bottom: 0.5rem;
+}
+
+.smoke-nav-dock {
+	padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+}
+
+.smoke-app-content {
+	padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
 }
 
 .smoke-calendar-day {

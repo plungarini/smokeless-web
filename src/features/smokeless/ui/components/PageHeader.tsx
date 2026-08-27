@@ -1,6 +1,6 @@
 export function PageHeader({ title, subtitle }: { title: string; subtitle?: string }) {
 	return (
-		<header className="smoke-page-header shrink-0 px-4 pb-4 pt-[max(16px,env(safe-area-inset-top,0px)+8px)]">
+		<header className="smoke-page-header shrink-0 px-4 pb-4">
 			<div className="flex items-start justify-between gap-4">
 				<div>
 					<h1 className="smoke-page-title">{title}</h1>
